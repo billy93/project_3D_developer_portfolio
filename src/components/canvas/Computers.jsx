@@ -5,7 +5,12 @@ import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
 import CanvasLoader from "../Loader";
 
 const Computers = ({ isMobile }) => {
-  const computer = useGLTF("./desktop_pc/scene.gltf");
+  const { computer, error } = useGLTF("./desktop_pc/scene.gltf");
+
+  if (error) {
+    console.error('Error loading GLTF model:', error);
+    return <div>Failed to load model</div>;
+  }
 
   return (
     <mesh>
@@ -56,7 +61,7 @@ const ComputersCanvas = () => {
   return (
     <Canvas
       frameloop='demand'
-      shadows
+      shadows={!isMobile}
       dpr={isMobile ? 1 : [1, 2]} 
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{ preserveDrawingBuffer: true }}
